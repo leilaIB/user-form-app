@@ -41,20 +41,29 @@ app.get('/users', (req, res) => {
 
 // Route pour ajouter un utilisateur
 app.post('/users', (req, res) => {
-  const { name, surname, birthdate, gender, address, cin } = req.body;
-  
-  db.run(
-    `INSERT INTO users (name, surname, birthdate, gender, address, cin) VALUES (?, ?, ?, ?, ?, ?)`,
-    [name, surname, birthdate, gender, address, cin],
-    function (err) {
-      if (err) {
-        res.status(500).json({ error: err.message });
-      } else {
-        res.status(201).json({ id: this.lastID });
+    const { name, surname, birthdate, gender, address, cin } = req.body;
+    
+    db.run(
+      `INSERT INTO users (name, surname, birthdate, gender, address, cin) VALUES (?, ?, ?, ?, ?, ?)`,
+      [name, surname, birthdate, gender, address, cin],
+      function (err) {
+        if (err) {
+          return res.status(500).json({ error: err.message });
+        }
+        // Renvoie l'ID généré et toutes les informations de l'utilisateur
+        res.status(201).json({
+          id: this.lastID, 
+          name,
+          surname,
+          birthdate,
+          gender,
+          address,
+          cin
+        });
       }
-    }
-  );
-});
+    );
+  });
+  
 
 // Route pour mettre à jour un utilisateur
 app.put('/users/:id', (req, res) => {
