@@ -2,7 +2,10 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const PORT = 5000;
+const cors = require('cors');  
 
+
+app.use(cors());
 // Middleware pour parser les requêtes JSON
 app.use(express.json());
 
